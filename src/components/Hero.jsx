@@ -50,7 +50,6 @@ export function Hero() {
         </p>
         <div className="mt-10 flex justify-center gap-x-6">
           <Button onClick={() => addItem(product)}>Add to Cart</Button>
-          <Button href="/register">Order Now</Button>
           <Button
             href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             variant="outline"

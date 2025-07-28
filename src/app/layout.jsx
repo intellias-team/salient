@@ -7,10 +7,10 @@ import CartProviderClient from '@/components/CartProviderClient'; // Import the 
 export const metadata = {
   title: {
     template: '%s - TaxPal',
-    default: 'TaxPal - Accounting made simple for small businesses',
+    default: 'Opti-Surge - Optimize Your Testosterone',
   },
   description:
-    'Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited.',
+    'All natural fenugreek seed testosterone booster.',
 }
 
 const inter = Inter({

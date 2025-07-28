@@ -1,5 +1,3 @@
-// Update src/app/cart/page.jsx - change the checkout button to link to /checkout instead of redirectToCheckout
-
 'use client'; // This makes it a Client Component for hooks and interactivity
 
 import { useShoppingCart } from 'use-shopping-cart';
@@ -8,10 +6,18 @@ import { Container } from '@/components/Container'; // Reuse your Container for 
 import Link from 'next/link'; // Add for linking to checkout
 
 export default function CartPage() {
-  const { cartDetails, totalPrice, removeItem, cartCount } = useShoppingCart();
+  const { cartDetails, totalPrice, removeItem, cartCount, setItemQuantity } = useShoppingCart();
 
   // Convert cartDetails object to array for easier mapping
   const cartItems = Object.entries(cartDetails || {}).map(([id, item]) => item);
+
+  const handleQuantityChange = (itemId, newQuantity) => {
+    if (newQuantity < 1) {
+      removeItem(itemId); // Remove if quantity is 0 or less
+    } else {
+      setItemQuantity(itemId, newQuantity);
+    }
+  };
 
   if (cartCount === 0) {
     return (
@@ -32,8 +38,28 @@ export default function CartPage() {
             <div key={item.id} className="flex justify-between items-center mb-4 p-4 border rounded-lg">
               <div>
                 <h2 className="font-semibold">{item.name}</h2>
-                <p className="text-gray-600">Quantity: {item.quantity}</p>
                 <p className="text-gray-600">Price: ${(item.price / 100).toFixed(2)}</p>
+                <div className="flex items-center mt-2">
+                  <button
+                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    className="px-2 py-1 border rounded-l hover:bg-gray-200"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
+                    className="w-12 text-center border-t border-b"
+                    min="1"
+                  />
+                  <button
+                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    className="px-2 py-1 border rounded-r hover:bg-gray-200"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
               <div className="text-right">
                 <p className="font-bold">${((item.price * item.quantity) / 100).toFixed(2)}</p>

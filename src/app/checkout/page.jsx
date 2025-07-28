@@ -24,6 +24,13 @@ const elementStyles = {
   },
 };
 
+// Shipping options (adjust rates as needed)
+const shippingOptions = [
+  { label: 'Flat USPS', value: 'flat_usps', cost: 500 }, // $5.00 in cents
+  { label: 'FedEx Ground', value: 'fedex_ground', cost: 1000 }, // $10.00
+  { label: 'FedEx Overnight', value: 'fedex_overnight', cost: 2500 }, // $25.00
+];
+
 export default function CheckoutPage() {
   return (
     <Elements stripe={stripePromise}>
@@ -58,14 +65,17 @@ function CheckoutForm() {
     country: 'US',
   });
   const [sameAsBilling, setSameAsBilling] = useState(true);
+  const [selectedShipping, setSelectedShipping] = useState(shippingOptions[0].value); // Default to first option
+  const shippingCost = shippingOptions.find(opt => opt.value === selectedShipping)?.cost || 0;
+  const grandTotal = totalPrice + shippingCost; // Product total + shipping in cents
 
-  // Fetch client secret for PaymentIntent
+  // Fetch client secret for PaymentIntent with grandTotal
   useEffect(() => {
     async function createPaymentIntent() {
       const response = await fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: totalPrice }), // totalPrice is in cents
+        body: JSON.stringify({ amount: grandTotal }), // Use grandTotal
       });
       const data = await response.json();
       if (data.clientSecret) {
@@ -74,20 +84,20 @@ function CheckoutForm() {
         setError(data.error || 'Failed to create payment intent');
       }
     }
-    if (totalPrice > 0) {
+    if (grandTotal > 0) {
       createPaymentIntent();
     }
-  }, [totalPrice]);
+  }, [grandTotal]);
 
-  // Setup Payment Request for Apple Pay
+  // Setup Payment Request for Apple Pay / Google Pay
   useEffect(() => {
-    if (stripe && totalPrice > 0) {
+    if (stripe && grandTotal > 0) {
       const pr = stripe.paymentRequest({
         country: 'US', // Adjust to your country
         currency: 'usd',
         total: {
           label: 'Total',
-          amount: totalPrice, // In cents
+          amount: grandTotal, // Use grandTotal
         },
         requestPayerName: true,
         requestPayerEmail: true,
@@ -119,7 +129,7 @@ function CheckoutForm() {
         }
       });
     }
-  }, [stripe, totalPrice, clientSecret]);
+  }, [stripe, grandTotal, clientSecret]);
 
   // Copy billing to shipping if checkbox is checked
   useEffect(() => {
@@ -172,7 +182,7 @@ function CheckoutForm() {
       setLoading(false);
     } else if (paymentIntent.status === 'succeeded') {
       // Handle successful payment: clear cart, redirect to success page
-      // Optionally, send shippingAddress to your backend for fulfillment
+      // Optionally, send shippingAddress and selectedShipping to your backend for fulfillment (e.g., via another API call)
       clearCart();
       window.location.href = '/success'; // Or use next/router
       setLoading(false);
@@ -187,9 +197,11 @@ function CheckoutForm() {
     <Container className="py-20">
       <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
       <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-        {/* Apple Pay Button */}
+        {/* Apple Pay / Google Pay Button */}
         {paymentRequest && (
-          <PaymentRequestButtonElement options={{ paymentRequest }} className="mb-6" />
+          <div className="mb-6">
+            <PaymentRequestButtonElement options={{ paymentRequest }} />
+          </div>
         )}
 
         {/* Name Section */}
@@ -343,6 +355,22 @@ function CheckoutForm() {
           )}
         </div>
 
+        {/* Shipping Options Section */}
+        <div className="mb-6">
+          <h2 className="text-xl font-bold mb-4">Shipping Options</h2>
+          <select
+            value={selectedShipping}
+            onChange={(e) => setSelectedShipping(e.target.value)}
+            className="w-full p-3 border rounded"
+          >
+            {shippingOptions.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label} - ${ (opt.cost / 100).toFixed(2) }
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Payment Section */}
         <div className="mb-6">
           <h2 className="text-xl font-bold mb-4">Payment Information</h2>
@@ -366,9 +394,16 @@ function CheckoutForm() {
           </div>
         </div>
 
+        {/* Total with Shipping */}
+        <div className="mb-6 text-right">
+          <p>Subtotal: ${ (totalPrice / 100).toFixed(2) }</p>
+          <p>Shipping: ${ (shippingCost / 100).toFixed(2) }</p>
+          <p className="font-bold">Grand Total: ${ (grandTotal / 100).toFixed(2) }</p>
+        </div>
+
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <Button type="submit" disabled={!stripe || loading} className="w-full">
-          {loading ? 'Processing...' : `Pay $${(totalPrice / 100).toFixed(2)}`}
+          {loading ? 'Processing...' : `Pay ${ (grandTotal / 100).toFixed(2) }`}
         </Button>
       </form>
     </Container>
