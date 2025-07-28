@@ -3,14 +3,14 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci  # Install dependencies
-        - export STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/amplify/[appId]/[branchName]/STRIPE_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)  # Fetch secret
-        - export NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$(aws ssm get-parameter --name "/amplify/[appId]/[branchName]/NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --with-decryption --query "Parameter.Value" --output text)  # Fetch public key if secret
+        - npm ci
     build:
       commands:
-        - echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env.production  # Write to env file for runtime
+        - STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/amplify/[appId]/[branchName]/STRIPE_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
+        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$(aws ssm get-parameter --name "/amplify/[appId]/[branchName]/NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --with-decryption --query "Parameter.Value" --output text)
+        - echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env.production
         - echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" >> .env.production
-        - npm run build  # Your Next.js build
+        - npm run build
   artifacts:
     baseDirectory: .next
     files:
