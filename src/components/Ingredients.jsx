@@ -1,155 +1,232 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useId } from 'react'
 import Image from 'next/image'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 
 import { Container } from '@/components/Container'
-import backgroundImage from '@/images/background-features.jpg'
-import screenshotExpenses from '@/images/screenshots/expenses.png'
-import screenshotPayroll from '@/images/screenshots/payroll.png'
-import screenshotReporting from '@/images/screenshots/reporting.png'
-import screenshotVatReturns from '@/images/screenshots/vat-returns.png'
+import screenshotContacts from '@/images/screenshots/contacts.png'
+import screenshotInventory from '@/images/screenshots/inventory.png'
+import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
 
 const features = [
   {
-    title: 'Payroll',
+    name: 'Testosurge 500 mg',
+    summary: 'Stay on top of things with always up-to-date reporting features.',
     description:
-      "Keep track of everyone's salaries and whether or not they've been paid. Direct deposit not supported.",
-    image: screenshotPayroll,
+      'We talked about reporting in the section above but we needed three items here, so mentioning it one more time for posterity.',
+    image: screenshotProfitLoss,
+    icon: function ReportingIcon() {
+      let id = useId()
+      return (
+        <>
+          <defs>
+            <linearGradient
+              id={id}
+              x1="11.5"
+              y1={18}
+              x2={36}
+              y2="15.5"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset=".194" stopColor="#fff" />
+              <stop offset={1} stopColor="#6692F1" />
+            </linearGradient>
+          </defs>
+          <path
+            d="m30 15-4 5-4-11-4 18-4-11-4 7-4-5"
+            stroke={`url(#${id})`}
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </>
+      )
+    },
   },
   {
-    title: 'Claim expenses',
+    name: 'Venomerix Optima 100 mg',
+    summary:
+      'Never lose track of what’s in stock with accurate inventory tracking.',
     description:
-      "All of your receipts organized into one place, as long as you don't mind typing in the data by hand.",
-    image: screenshotExpenses,
+      'We don’t offer this as part of our software but that statement is inarguably true. Accurate inventory tracking would help you for sure.',
+    image: screenshotInventory,
+    icon: function InventoryIcon() {
+      return (
+        <>
+          <path
+            opacity=".5"
+            d="M8 17a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z"
+            fill="#fff"
+          />
+          <path
+            opacity=".3"
+            d="M8 24a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z"
+            fill="#fff"
+          />
+          <path
+            d="M8 10a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2Z"
+            fill="#fff"
+          />
+        </>
+      )
+    },
   },
   {
-    title: 'VAT handling',
+    name: 'Hyperox 50 mg',
+    summary:
+      'Organize all of your contacts, service providers, and invoices in one place.',
     description:
-      "We only sell our software to companies who don't deal with VAT at all, so technically we do all the VAT stuff they need.",
-    image: screenshotVatReturns,
-  },
-  {
-    title: 'Reporting',
-    description:
-      'Easily export your data into an Excel spreadsheet where you can do whatever the hell you want with it.',
-    image: screenshotReporting,
+      'This also isn’t actually a feature, it’s just some friendly advice. We definitely recommend that you do this, you’ll feel really organized and professional.',
+    image: screenshotContacts,
+    icon: function ContactsIcon() {
+      return (
+        <>
+          <path
+            opacity=".5"
+            d="M25.778 25.778c.39.39 1.027.393 1.384-.028A11.952 11.952 0 0 0 30 18c0-6.627-5.373-12-12-12S6 11.373 6 18c0 2.954 1.067 5.659 2.838 7.75.357.421.993.419 1.384.028.39-.39.386-1.02.036-1.448A9.959 9.959 0 0 1 8 18c0-5.523 4.477-10 10-10s10 4.477 10 10a9.959 9.959 0 0 1-2.258 6.33c-.35.427-.354 1.058.036 1.448Z"
+            fill="#fff"
+          />
+          <path
+            d="M12 28.395V28a6 6 0 0 1 12 0v.395A11.945 11.945 0 0 1 18 30c-2.186 0-4.235-.584-6-1.605ZM21 16.5c0-1.933-.5-3.5-3-3.5s-3 1.567-3 3.5 1.343 3.5 3 3.5 3-1.567 3-3.5Z"
+            fill="#fff"
+          />
+        </>
+      )
+    },
   },
 ]
 
-export function PrimaryFeatures() {
-  let [tabOrientation, setTabOrientation] = useState('horizontal')
+function Feature({ feature, isActive, className, ...props }) {
+  return (
+    <div
+      className={clsx(className, !isActive && 'opacity-75 hover:opacity-100')}
+      {...props}
+    >
+      <div
+        className={clsx(
+          'w-9 rounded-lg',
+          isActive ? 'bg-blue-600' : 'bg-slate-500',
+        )}
+      >
+        <svg aria-hidden="true" className="h-9 w-9" fill="none">
+          <feature.icon />
+        </svg>
+      </div>
+      <h3
+        className={clsx(
+          'mt-6 text-sm font-medium',
+          isActive ? 'text-blue-600' : 'text-slate-600',
+        )}
+      >
+        {feature.name}
+      </h3>
+      <p className="mt-2 font-display text-xl text-slate-900">
+        {feature.summary}
+      </p>
+      <p className="mt-4 text-sm text-slate-600">{feature.description}</p>
+    </div>
+  )
+}
 
-  useEffect(() => {
-    let lgMediaQuery = window.matchMedia('(min-width: 1024px)')
+function FeaturesMobile() {
+  return (
+    <div className="-mx-4 mt-20 flex flex-col gap-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden">
+      {features.map((feature) => (
+        <div key={feature.summary}>
+          <Feature feature={feature} className="mx-auto max-w-2xl" isActive />
+          <div className="relative mt-10 pb-10">
+            <div className="absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6" />
+            <div className="relative mx-auto w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
+              <Image
+                className="w-full"
+                src={feature.image}
+                alt=""
+                sizes="52.75rem"
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
-    function onMediaQueryChange({ matches }) {
-      setTabOrientation(matches ? 'vertical' : 'horizontal')
-    }
+function FeaturesDesktop() {
+  return (
+    <TabGroup className="hidden lg:mt-20 lg:block">
+      {({ selectedIndex }) => (
+        <>
+          <TabList className="grid grid-cols-3 gap-x-8">
+            {features.map((feature, featureIndex) => (
+              <Feature
+                key={feature.summary}
+                feature={{
+                  ...feature,
+                  name: (
+                    <Tab className="data-selected:not-data-focus:outline-hidden">
+                      <span className="absolute inset-0" />
+                      {feature.name}
+                    </Tab>
+                  ),
+                }}
+                isActive={featureIndex === selectedIndex}
+                className="relative"
+              />
+            ))}
+          </TabList>
+          <TabPanels className="relative mt-20 overflow-hidden rounded-4xl bg-slate-200 px-14 py-16 xl:px-16">
+            <div className="-mx-5 flex">
+              {features.map((feature, featureIndex) => (
+                <TabPanel
+                  static
+                  key={feature.summary}
+                  className={clsx(
+                    'px-5 transition duration-500 ease-in-out data-selected:not-data-focus:outline-hidden',
+                    featureIndex !== selectedIndex && 'opacity-60',
+                  )}
+                  style={{ transform: `translateX(-${selectedIndex * 100}%)` }}
+                  aria-hidden={featureIndex !== selectedIndex}
+                >
+                  <div className="w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
+                    <Image
+                      className="w-full"
+                      src={feature.image}
+                      alt=""
+                      sizes="52.75rem"
+                    />
+                  </div>
+                </TabPanel>
+              ))}
+            </div>
+            <div className="pointer-events-none absolute inset-0 rounded-4xl ring-1 ring-inset ring-slate-900/10" />
+          </TabPanels>
+        </>
+      )}
+    </TabGroup>
+  )
+}
 
-    onMediaQueryChange(lgMediaQuery)
-    lgMediaQuery.addEventListener('change', onMediaQueryChange)
-
-    return () => {
-      lgMediaQuery.removeEventListener('change', onMediaQueryChange)
-    }
-  }, [])
-
+export function Ingredients() {
   return (
     <section
-      id="features"
-      aria-label="Features for running your books"
-      className="relative overflow-hidden bg-blue-600 pt-20 pb-28 sm:py-32"
+      id="ingredients"
+      aria-label="Features for simplifying everyday business tasks"
+      className="pt-20 pb-14 sm:pt-32 sm:pb-20 lg:pb-32"
     >
-      <Image
-        className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
-        src={backgroundImage}
-        alt=""
-        width={2245}
-        height={1636}
-        unoptimized
-      />
-      <Container className="relative">
-        <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
-          <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Everything you need to run your books.
+      <Container>
+        <div className="mx-auto max-w-2xl md:text-center">
+          <h2 className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
+            Ingredients of Opti-Surge
           </h2>
-          <p className="mt-6 text-lg tracking-tight text-blue-100">
-            Well everything you need if you aren’t that picky about minor
-            details like tax compliance.
+          <p className="mt-4 text-lg tracking-tight text-slate-700">
+            Because you’d probably be a little confused if we suggested you
+            complicate your everyday business tasks instead.
           </p>
         </div>
-        <TabGroup
-          className="mt-16 grid grid-cols-1 items-center gap-y-2 pt-10 sm:gap-y-6 md:mt-20 lg:grid-cols-12 lg:pt-0"
-          vertical={tabOrientation === 'vertical'}
-        >
-          {({ selectedIndex }) => (
-            <>
-              <div className="-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5">
-                <TabList className="relative z-10 flex gap-x-4 px-4 whitespace-nowrap sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:gap-x-0 lg:gap-y-1 lg:whitespace-normal">
-                  {features.map((feature, featureIndex) => (
-                    <div
-                      key={feature.title}
-                      className={clsx(
-                        'group relative rounded-full px-4 py-1 lg:rounded-l-xl lg:rounded-r-none lg:p-6',
-                        selectedIndex === featureIndex
-                          ? 'bg-white lg:bg-white/10 lg:ring-1 lg:ring-white/10 lg:ring-inset'
-                          : 'hover:bg-white/10 lg:hover:bg-white/5',
-                      )}
-                    >
-                      <h3>
-                        <Tab
-                          className={clsx(
-                            'font-display text-lg data-selected:not-data-focus:outline-hidden',
-                            selectedIndex === featureIndex
-                              ? 'text-blue-600 lg:text-white'
-                              : 'text-blue-100 hover:text-white lg:text-white',
-                          )}
-                        >
-                          <span className="absolute inset-0 rounded-full lg:rounded-l-xl lg:rounded-r-none" />
-                          {feature.title}
-                        </Tab>
-                      </h3>
-                      <p
-                        className={clsx(
-                          'mt-2 hidden text-sm lg:block',
-                          selectedIndex === featureIndex
-                            ? 'text-white'
-                            : 'text-blue-100 group-hover:text-white',
-                        )}
-                      >
-                        {feature.description}
-                      </p>
-                    </div>
-                  ))}
-                </TabList>
-              </div>
-              <TabPanels className="lg:col-span-7">
-                {features.map((feature) => (
-                  <TabPanel key={feature.title} unmount={false}>
-                    <div className="relative sm:px-6 lg:hidden">
-                      <div className="absolute -inset-x-4 top-[-6.5rem] bottom-[-4.25rem] bg-white/10 ring-1 ring-white/10 ring-inset sm:inset-x-0 sm:rounded-t-xl" />
-                      <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
-                        {feature.description}
-                      </p>
-                    </div>
-<div className="mt-10 w-full overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20">
-  <Image
-    className="w-full h-auto md:max-w-[80%] lg:max-w-[70%]"
-    src={feature.image}
-    alt=""
-    priority
-    sizes="(min-width: 1024px) 70vw, (min-width: 768px) 80vw, 100vw"
-  />
-</div>
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </>
-          )}
-        </TabGroup>
+        <FeaturesMobile />
+        <FeaturesDesktop />
       </Container>
     </section>
   )

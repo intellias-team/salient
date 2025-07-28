@@ -4,8 +4,8 @@ import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
 import { Hero } from '@/components/Hero'
 import { Pricing } from '@/components/Pricing'
-import { About } from '@/components/About'  // Changed from PrimaryFeatures
-import { SecondaryFeatures } from '@/components/SecondaryFeatures'
+import { About } from '@/components/About'
+import { Ingredients } from '@/components/Ingredients'  // Updated import
 import { Testimonials } from '@/components/Testimonials'
 
 export default function Home() {
@@ -15,7 +15,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <SecondaryFeatures />
+        <Ingredients />  
         <CallToAction />
         <Testimonials />
         <Pricing />
