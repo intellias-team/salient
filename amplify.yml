@@ -6,7 +6,7 @@ frontend:
         - npm ci  # Install dependencies
     build:
       commands:
-        - env | grep STRIPE_SECRET_KEY >> .env.production  # Write secret to env file for runtime
+        - echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env.production  # Write if available, always succeeds
         - npm run build  # Your Next.js build
   artifacts:
     baseDirectory: .next
