@@ -1,5 +1,6 @@
 'use client'; // This makes it a Client Component for hooks and interactivity
 
+import { useState } from 'react'; // Add for useState
 import { useShoppingCart } from 'use-shopping-cart';
 import { Button } from '@/components/Button'; // Assuming you have this from your existing components
 import { Container } from '@/components/Container'; // Reuse your Container for consistency
@@ -18,6 +19,38 @@ export default function CartPage() {
       setItemQuantity(itemId, newQuantity);
     }
   };
+
+  // Discount state
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscount, setAppliedDiscount] = useState(0); // Percentage discount
+  const [discountError, setDiscountError] = useState(null);
+
+  // Hardcoded discount codes (for different promotions; add more as needed)
+  const discounts = {
+    'PROMO10': 10, // 10% off
+    'SUMMER20': 20, // 20% off
+    'WELCOME15': 15, // 15% off for new users
+  };
+
+  const handleApplyDiscount = () => {
+    const upperCode = discountCode.toUpperCase();
+    const percent = discounts[upperCode];
+    if (percent) {
+      setAppliedDiscount(percent);
+      setDiscountError(null);
+      // Store discount in localStorage for checkout
+      localStorage.setItem('appliedDiscount', JSON.stringify({ code: upperCode, percent }));
+    } else {
+      setAppliedDiscount(0);
+      setDiscountError('Invalid discount code');
+      localStorage.removeItem('appliedDiscount');
+    }
+  };
+
+  // Calculate totals with discount
+  const subtotal = totalPrice;
+  const discountAmount = (subtotal * appliedDiscount) / 100;
+  const discountedTotal = subtotal - discountAmount;
 
   if (cartCount === 0) {
     return (
@@ -38,28 +71,8 @@ export default function CartPage() {
             <div key={item.id} className="flex justify-between items-center mb-4 p-4 border rounded-lg">
               <div>
                 <h2 className="font-semibold">{item.name}</h2>
+                <p className="text-gray-600">Quantity: {item.quantity}</p>
                 <p className="text-gray-600">Price: ${(item.price / 100).toFixed(2)}</p>
-                <div className="flex items-center mt-2">
-                  <button
-                    onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                    className="px-2 py-1 border rounded-l hover:bg-gray-200"
-                  >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
-                    className="w-12 text-center border-t border-b"
-                    min="1"
-                  />
-                  <button
-                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                    className="px-2 py-1 border rounded-r hover:bg-gray-200"
-                  >
-                    +
-                  </button>
-                </div>
               </div>
               <div className="text-right">
                 <p className="font-bold">${((item.price * item.quantity) / 100).toFixed(2)}</p>
@@ -77,12 +90,37 @@ export default function CartPage() {
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
           <div className="flex justify-between mb-2">
             <span>Subtotal:</span>
-            <span>${(totalPrice / 100).toFixed(2)}</span>
+            <span>${(subtotal / 100).toFixed(2)}</span>
+          </div>
+          {/* Discount Input */}
+          <div className="mb-4">
+            <label className="block mb-2 font-semibold">Discount Code</label>
+            <div className="flex">
+              <input
+                type="text"
+                value={discountCode}
+                onChange={(e) => setDiscountCode(e.target.value)}
+                className="w-full p-2 border rounded-l"
+                placeholder="Enter code"
+              />
+              <button
+                onClick={handleApplyDiscount}
+                className="px-4 py-2 bg-blue-500 text-white rounded-r hover:bg-blue-600"
+              >
+                Apply
+              </button>
+            </div>
+            {discountError && <p className="text-red-500 mt-1">{discountError}</p>}
+            {appliedDiscount > 0 && <p className="text-green-500 mt-1">{appliedDiscount}% discount applied</p>}
+          </div>
+          <div className="flex justify-between mb-2">
+            <span>Discount:</span>
+            <span>-${(discountAmount / 100).toFixed(2)}</span>
           </div>
           {/* Add taxes/shipping if configured */}
           <div className="flex justify-between font-bold text-lg mt-4">
             <span>Total:</span>
-            <span>${(totalPrice / 100).toFixed(2)}</span>
+            <span>${(discountedTotal / 100).toFixed(2)}</span>
           </div>
           <Link href="/checkout">
             <Button className="w-full mt-6">Proceed to Checkout</Button>

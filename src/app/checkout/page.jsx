@@ -50,6 +50,7 @@ function CheckoutForm() {
 
   // Form state
   const [name, setName] = useState('');
+  const [email, setEmail] = useState(''); // New email field
   const [billingAddress, setBillingAddress] = useState({
     line1: '',
     city: '',
@@ -67,15 +68,40 @@ function CheckoutForm() {
   const [sameAsBilling, setSameAsBilling] = useState(true);
   const [selectedShipping, setSelectedShipping] = useState(shippingOptions[0].value); // Default to first option
   const shippingCost = shippingOptions.find(opt => opt.value === selectedShipping)?.cost || 0;
-  const grandTotal = totalPrice + shippingCost; // Product total + shipping in cents
 
-  // Fetch client secret for PaymentIntent with grandTotal
+  // Load discount from localStorage
+  const [appliedDiscount, setAppliedDiscount] = useState({ code: '', percent: 0 });
+  useEffect(() => {
+    const storedDiscount = localStorage.getItem('appliedDiscount');
+    if (storedDiscount) {
+      setAppliedDiscount(JSON.parse(storedDiscount));
+    }
+  }, []);
+
+  // Calculate totals with discount and shipping
+  const subtotal = totalPrice;
+  const discountAmount = (subtotal * appliedDiscount.percent) / 100;
+  const discountedSubtotal = subtotal - discountAmount;
+  const grandTotal = discountedSubtotal + shippingCost; // Apply discount before shipping
+
+  // Fetch client secret for PaymentIntent with grandTotal and order details
   useEffect(() => {
     async function createPaymentIntent() {
+      const cartItems = Object.entries(cartDetails || {}).map(([id, item]) => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price / 100, // Convert to dollars
+      }));
+      const shippingLabel = shippingOptions.find(opt => opt.value === selectedShipping)?.label || 'None';
       const response = await fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: grandTotal }), // Use grandTotal
+        body: JSON.stringify({
+          amount: grandTotal,
+          items: cartItems,
+          discount: appliedDiscount,
+          shipping: { method: selectedShipping, cost: shippingCost },
+        }),
       });
       const data = await response.json();
       if (data.clientSecret) {
@@ -87,13 +113,13 @@ function CheckoutForm() {
     if (grandTotal > 0) {
       createPaymentIntent();
     }
-  }, [grandTotal]);
+  }, [grandTotal, cartDetails, appliedDiscount, selectedShipping]);
 
   // Setup Payment Request for Apple Pay / Google Pay
   useEffect(() => {
     if (stripe && grandTotal > 0) {
       const pr = stripe.paymentRequest({
-        country: 'US', // Adjust to your country
+        country: 'US',
         currency: 'usd',
         total: {
           label: 'Total',
@@ -102,7 +128,7 @@ function CheckoutForm() {
         requestPayerName: true,
         requestPayerEmail: true,
         requestPayerPhone: true,
-        requestShipping: true, // Enable if shipping is needed
+        requestShipping: true,
       });
 
       pr.canMakePayment().then((result) => {
@@ -123,13 +149,15 @@ function CheckoutForm() {
           setError(confirmError.message);
         } else {
           ev.complete('success');
-          // Optionally handle shipping from ev.shippingAddress
           clearCart();
+          localStorage.removeItem('appliedDiscount'); // Clear discount on success
+          // Send order email (use the payer email from ev.payerEmail if available)
+          await sendOrderEmail(ev.payerEmail || email);
           window.location.href = '/success';
         }
       });
     }
-  }, [stripe, grandTotal, clientSecret]);
+  }, [stripe, grandTotal, clientSecret, email]);
 
   // Copy billing to shipping if checkbox is checked
   useEffect(() => {
@@ -150,8 +178,8 @@ function CheckoutForm() {
     }
 
     // Basic validation (add more as needed)
-    if (!name || !billingAddress.line1 || !billingAddress.city || !billingAddress.state || !billingAddress.postal_code) {
-      setError('Please fill out all required fields.');
+    if (!name || !email || !billingAddress.line1 || !billingAddress.city || !billingAddress.state || !billingAddress.postal_code) {
+      setError('Please fill out all required fields, including email.');
       setLoading(false);
       return;
     }
@@ -163,6 +191,7 @@ function CheckoutForm() {
       billing_details: {
         name,
         address: billingAddress,
+        email, // Add email to billing details
       },
     });
 
@@ -181,11 +210,42 @@ function CheckoutForm() {
       setError(stripeError.message);
       setLoading(false);
     } else if (paymentIntent.status === 'succeeded') {
-      // Handle successful payment: clear cart, redirect to success page
-      // Optionally, send shippingAddress and selectedShipping to your backend for fulfillment (e.g., via another API call)
+      // Handle successful payment: clear cart, send email, redirect to success page
       clearCart();
+      localStorage.removeItem('appliedDiscount'); // Clear discount on success
+      await sendOrderEmail(email);
       window.location.href = '/success'; // Or use next/router
       setLoading(false);
+    }
+  };
+
+  // Function to send order email
+  const sendOrderEmail = async (recipientEmail) => {
+    const orderDetails = {
+      items: Object.entries(cartDetails || {}).map(([id, item]) => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price / 100,
+      })),
+      subtotal: (subtotal / 100).toFixed(2),
+      discountCode: appliedDiscount.code,
+      discountAmount: (discountAmount / 100).toFixed(2),
+      shippingMethod: selectedShipping,
+      shippingCost: (shippingCost / 100).toFixed(2),
+      grandTotal: (grandTotal / 100).toFixed(2),
+      billingAddress,
+      shippingAddress,
+    };
+
+    try {
+      await fetch('/api/send-order-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: recipientEmail, orderDetails }),
+      });
+    } catch (err) {
+      console.error('Error sending email:', err);
+      // Optional: Handle error silently or show message
     }
   };
 
@@ -204,7 +264,7 @@ function CheckoutForm() {
           </div>
         )}
 
-        {/* Name Section */}
+        {/* Personal Information Section */}
         <div className="mb-6">
           <h2 className="text-xl font-bold mb-4">Personal Information</h2>
           <label className="block mb-2 font-semibold">Full Name</label>
@@ -212,8 +272,17 @@ function CheckoutForm() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full p-3 border rounded"
+            className="w-full p-3 border rounded mb-3"
             placeholder="John Doe"
+            required
+          />
+          <label className="block mb-2 font-semibold">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 border rounded"
+            placeholder="you@example.com"
             required
           />
         </div>
@@ -365,7 +434,7 @@ function CheckoutForm() {
           >
             {shippingOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
-                {opt.label} - ${ (opt.cost / 100).toFixed(2) }
+                {opt.label} - ${(opt.cost / 100).toFixed(2)}
               </option>
             ))}
           </select>
@@ -394,16 +463,19 @@ function CheckoutForm() {
           </div>
         </div>
 
-        {/* Total with Shipping */}
+        {/* Total with Discount and Shipping */}
         <div className="mb-6 text-right">
-          <p>Subtotal: ${ (totalPrice / 100).toFixed(2) }</p>
-          <p>Shipping: ${ (shippingCost / 100).toFixed(2) }</p>
-          <p className="font-bold">Grand Total: ${ (grandTotal / 100).toFixed(2) }</p>
+          <p>Subtotal: ${(subtotal / 100).toFixed(2)}</p>
+          {appliedDiscount.percent > 0 && (
+            <p>Discount ({appliedDiscount.code}): -${(discountAmount / 100).toFixed(2)}</p>
+          )}
+          <p>Shipping: ${(shippingCost / 100).toFixed(2)}</p>
+          <p className="font-bold">Grand Total: ${(grandTotal / 100).toFixed(2)}</p>
         </div>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <Button type="submit" disabled={!stripe || loading} className="w-full">
-          {loading ? 'Processing...' : `Pay ${ (grandTotal / 100).toFixed(2) }`}
+          {loading ? 'Processing...' : `Pay ${(grandTotal / 100).toFixed(2)}`}
         </Button>
       </form>
     </Container>
