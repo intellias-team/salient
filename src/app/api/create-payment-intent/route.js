@@ -1,56 +1,32 @@
-import AWS from 'aws-sdk';
+import Stripe from 'stripe';
 
 export async function POST(req) {
-  const { email, orderDetails } = await req.json();
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-  // Configure AWS SES
-  AWS.config.update({ region: 'us-east-2' }); // Adjust to your SES region
-  const ses = new AWS.SES({ apiVersion: '2010-12-01' });
+  const { amount, items, discount, shipping } = await req.json();
 
-  // Format order details for email
-  const emailBody = `
-Order Confirmation
-
-Items:
-${orderDetails.items.map(item => `- ${item.name} x${item.quantity} @ $${item.price.toFixed(2)}`).join('\n')}
-
-Subtotal: $${orderDetails.subtotal}
-${orderDetails.discountCode ? `Discount (${orderDetails.discountCode}): -$${orderDetails.discountAmount}` : ''}
-Shipping (${orderDetails.shippingMethod}): $${orderDetails.shippingCost}
-Grand Total: $${orderDetails.grandTotal}
-
-Billing Address:
-${orderDetails.billingAddress.line1}
-${orderDetails.billingAddress.city}, ${orderDetails.billingAddress.state} ${orderDetails.billingAddress.postal_code}
-${orderDetails.billingAddress.country}
-
-Shipping Address:
-${orderDetails.shippingAddress.line1}
-${orderDetails.shippingAddress.city}, ${orderDetails.shippingAddress.state} ${orderDetails.shippingAddress.postal_code}
-${orderDetails.shippingAddress.country}
-
-Thank you for your order!
-  `;
-
-  const params = {
-    Source: 'no_reply@intellias.us', // Replace with your SES-verified sender email
-    Destination: { ToAddresses: [email] },
-    Message: {
-      Subject: { Data: 'Order Confirmation' },
-      Body: {
-        Text: { Data: emailBody },
-      },
-    },
-  };
+  // Format description for Stripe
+  const description = [
+    'Order Details:',
+    ...items.map(item => `${item.name} x${item.quantity} @ $${item.price.toFixed(2)}`),
+    discount.percent > 0 ? `Discount (${discount.code}): -${discount.percent}%` : '',
+    `Shipping: ${shipping.method} - $${(shipping.cost / 100).toFixed(2)}`,
+  ].filter(line => line).join('\n');
 
   try {
-    await ses.sendEmail(params).promise();
-    return new Response(JSON.stringify({ message: 'Email sent successfully' }), {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount, // In cents
+      currency: 'usd',
+      automatic_payment_methods: { enabled: true },
+      description, // Include order details
+    });
+
+    return new Response(JSON.stringify({ clientSecret: paymentIntent.client_secret }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error sending email:', error);
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+    console.error('PaymentIntent creation error:', error);
+    return new Response(JSON.stringify({ error: error.message }), { status: 400 });
   }
 }
