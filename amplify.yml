@@ -6,8 +6,8 @@ frontend:
         - npm ci
     build:
       commands:
-        - STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/amplify/[appId]/[branchName]/STRIPE_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
-        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$(aws ssm get-parameter --name "/amplify/[appId]/[branchName]/NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --with-decryption --query "Parameter.Value" --output text)
+        - STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main/STRIPE_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
+        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main/NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --with-decryption --query "Parameter.Value" --output text)
         - echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env.production
         - echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" >> .env.production
         - npm run build
