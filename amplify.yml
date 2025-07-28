@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci  # Install dependencies
+    build:
+      commands:
+        - env | grep STRIPE_SECRET_KEY >> .env.production  # Write secret to env file for runtime
+        - npm run build  # Your Next.js build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
