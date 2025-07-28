@@ -16,6 +16,7 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLink } from '@/components/NavLink'
+import { useShoppingCart } from 'use-shopping-cart'; // Add this import for cart count
 
 function MobileNavLink({ href, children }) {
   return (
@@ -69,7 +70,7 @@ function MobileNavigation() {
         transition
         className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-white p-4 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5 data-closed:scale-95 data-closed:opacity-0 data-enter:duration-150 data-enter:ease-out data-leave:duration-100 data-leave:ease-in"
       >
-		<MobileNavLink href="#primaryfeatures">Why Use?</MobileNavLink>
+        <MobileNavLink href="#primaryfeatures">Why Use?</MobileNavLink>
         <MobileNavLink href="#ingredients">Ingredients</MobileNavLink>
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#reviews">Reviews</MobileNavLink>
@@ -81,6 +82,8 @@ function MobileNavigation() {
 }
 
 export function Header() {
+  const { cartCount } = useShoppingCart(); // Get cart count from the hook
+
   return (
     <header className="py-0">
       <Container>
@@ -99,9 +102,9 @@ export function Header() {
             </div>
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
-            <Button href="/register" color="blue">
+            <Button href="/cart" color="blue"> {/* Changed href to /cart */}
               <span>
-                Get started <span className="hidden lg:inline">today</span>
+                Cart ({cartCount || 0}) {/* Display cart count */}
               </span>
             </Button>
             <div className="-mr-1 md:hidden">

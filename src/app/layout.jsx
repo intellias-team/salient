@@ -2,6 +2,7 @@ import { Inter, Lexend } from 'next/font/google'
 import clsx from 'clsx'
 
 import '@/styles/tailwind.css'
+import CartProviderClient from '@/components/CartProviderClient'; // Import the new client provider
 
 export const metadata = {
   title: {
@@ -34,7 +35,11 @@ export default function RootLayout({ children }) {
         lexend.variable,
       )}
     >
-      <body className="flex h-full flex-col">{children}</body>
+      <body className="flex h-full flex-col">
+        <CartProviderClient>
+          {children}
+        </CartProviderClient>
+      </body>
     </html>
   )
 }
