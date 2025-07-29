@@ -1,8 +1,10 @@
-import AWS from 'aws-sdk';   //TEST This
+import AWS from 'aws-sdk';
 
 export async function POST(req) {
   try {
     console.log('Received POST to /api/send-order-email');
+    console.log('SES_SENDER_EMAIL:', process.env.SES_SENDER_EMAIL || 'undefined');
+    console.log('AWS_REGION:', process.env.AWS_REGION || 'undefined');
 
     // Verify SES_SENDER_EMAIL
     if (!process.env.SES_SENDER_EMAIL) {
@@ -23,8 +25,20 @@ export async function POST(req) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-    AWS.config.update({ region: process.env.AWS_REGION });
-    console.log('AWS SES configured with region:', process.env.AWS_REGION);
+
+    // Explicitly disable EC2 metadata service to avoid 169.254.169.254 calls
+    const credentials = {
+      region: process.env.AWS_REGION,
+      // Use Lambda role credentials; don't set access keys unless necessary
+      // If explicit keys needed (less secure), uncomment:
+       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    };
+    console.log('Configuring AWS SDK with:', {
+      region: process.env.AWS_REGION,
+      hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
+    });
+    AWS.config.update(credentials);
     const ses = new AWS.SES({ apiVersion: '2010-12-01' });
 
     let body;
@@ -88,9 +102,9 @@ Thank you for your order!
       },
     };
 
-    console.log('Sending email to:', email, 'from:', process.env.SES_SENDER_EMAIL, 'with body:', emailBody);
+    console.log('Sending email to:', email, 'from:', process.env.SES_SENDER_EMAIL);
     await ses.sendEmail(params).promise();
-    console.log('Email sent successfully');
+    console.log('Email sent successfully to:', email);
     return new Response(JSON.stringify({ message: 'Email sent successfully' }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

@@ -9,10 +9,14 @@ frontend:
         - STRIPE_SECRET_KEY=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main-branch-bd79f0caa5/STRIPE_SECRET_KEY" --with-decryption --query "Parameter.Value" --output text)
         - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main-branch-bd79f0caa5/NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --with-decryption --query "Parameter.Value" --output text)
         - SES_SENDER_EMAIL=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main-branch-bd79f0caa5/SES_SENDER_EMAIL" --with-decryption --query "Parameter.Value" --output text)
+        - AWS_ACCESS_KEY_ID=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main-branch-bd79f0caa5/AWS_ACCESS_KEY_ID" --with-decryption --query "Parameter.Value" --output text)
+        - AWS_SECRET_ACCESS_KEY=$(aws ssm get-parameter --name "/amplify/d1a1owfdg90y6t/main-branch-bd79f0caa5/AWS_SECRET_ACCESS_KEY" --with-decryption --query "Parameter.Value" --output text)
         - echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env.production
         - echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" >> .env.production
         - echo "SES_SENDER_EMAIL=$SES_SENDER_EMAIL" >> .env.production
         - echo "AWS_REGION=us-east-2" >> .env.production
+        - echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" >> .env.production
+        - echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
