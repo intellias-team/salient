@@ -12,6 +12,7 @@ frontend:
         - echo "STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY" >> .env.production
         - echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" >> .env.production
         - echo "SES_SENDER_EMAIL=$SES_SENDER_EMAIL" >> .env.production
+        - echo "AWS_REGION=us-east-2" >> .env.production
         - npm run build
   artifacts:
     baseDirectory: .next
