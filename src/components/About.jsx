@@ -16,30 +16,24 @@ const features = [
   {
     title: 'Testosterone',
     description:
-      "Achieve 54% Higher Bioavailable Testosterone. Increase performance, muscle mass, healthy libido, and raise bioavailable, free, and total testosterone levels.  (Powered by Testosurge™) ",
+      'Achieve 54% Higher Bioavailable Testosterone. Increase performance, muscle mass, healthy libido, and raise bioavailable, free, and total testosterone levels. (Powered by Testosurge™) <br><br><ul style="list-style-type: disc; padding-left: 20px; text-align: left;"><li>For athletes – chasing strength, recovery, and peak performance.</li><li>For lifters & gym-goers – building lean muscle and seeing real results.</li><li>Men 30+ – maintaining healthy testosterone and energy with age</li></ul>',
     image: screenshotPayroll,
   },
   {
     title: 'Fat Loss',
     description:
-      "Experience Rapid Reductions in Body-Fat% (Powered by Testosurge™)",
+      'Experience Rapid Reductions in Body-Fat% (Powered by Testosurge™) <br><br><ul style="list-style-type: disc; padding-left: 20px; text-align: left;"><li>For athletes – targeting fat loss without losing muscle.</li><li>For lifters & gym-goers – achieving a leaner physique.</li><li>Men 30+ – boosting metabolism and energy.</li></ul>',
     image: screenshotExpenses,
   },
   {
     title: 'Recovery',
     description:
-      "Unlock Clean Energy & Faster Recovery: (Powered by Hyperox™, Venomerix™, and Testosterone Support)",
+      'Unlock Clean Energy & Faster Recovery: (Powered by Hyperox™, Venomerix™, and Testosterone Support)<br><br> <ul style="list-style-type: disc; padding-left: 20px; text-align: left;"><li>For athletes – faster muscle repair and stamina.</li><li>For lifters & gym-goers – reduced soreness and quicker recovery.</li><li>Men 30+ – sustained energy for daily performance.</li></ul>',
     image: screenshotVatReturns,
-  }/*,
-  {
-    title: 'Reporting',
-    description:
-      'Easily export your data into an Excel spreadsheet where you can do whatever the hell you want with it.',
-    image: screenshotReporting,
-  },*/
+  },
 ]
 
-export function About() {  // Changed from PrimaryFeatures
+export function About() {
   let [tabOrientation, setTabOrientation] = useState('horizontal')
 
   useEffect(() => {
@@ -77,7 +71,7 @@ export function About() {  // Changed from PrimaryFeatures
             Why use Opti-Surge?
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-			Boost Testosterone Naturally. Build more muscle. Burn more fat. Recover faster and perform longer — all without synthetic hormones or harsh stimulants.
+            Boost Testosterone Naturally. Build more muscle. Burn more fat. Recover faster and perform longer — all without synthetic hormones or harsh stimulants.
           </p>
         </div>
         <TabGroup
@@ -118,9 +112,8 @@ export function About() {  // Changed from PrimaryFeatures
                             ? 'text-white'
                             : 'text-blue-100 group-hover:text-white',
                         )}
-                      >
-                        {feature.description}
-                      </p>
+                        dangerouslySetInnerHTML={{ __html: feature.description }}
+                      />
                     </div>
                   ))}
                 </TabList>
@@ -130,9 +123,11 @@ export function About() {  // Changed from PrimaryFeatures
                   <TabPanel key={feature.title} unmount={false}>
                     <div className="relative sm:px-6 lg:hidden">
                       <div className="absolute inset-x-0 top-[-6.5rem] bottom-[-4.25rem] bg-white/10 ring-1 ring-white/10 ring-inset sm:rounded-t-xl" />
-                      <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
-                        {feature.description}
-                      </p>
+                      <p
+                        className="relative mx-auto max-w-2xl text-base text-white sm:text-center"
+                        style={{ textAlign: 'left' }}
+                        dangerouslySetInnerHTML={{ __html: feature.description }}
+                      />
                     </div>
                     <div className="relative mt-10 w-full max-w-full pl-4 overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:max-w-[960px] sm:pl-6 lg:mt-0 lg:max-w-[1080px] lg:pl-8">
                       <Image
