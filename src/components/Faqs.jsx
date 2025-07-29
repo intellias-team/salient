@@ -6,55 +6,39 @@ import backgroundImage from '@/images/background-faqs.jpg'
 const faqs = [
   [
     {
-      question: 'Does TaxPal handle VAT?',
+      question: 'What is OptiSurge T1?',
       answer:
-        'Well no, but if you move your company offshore you can probably ignore it.',
+        'OptiSurge T1 is a clinically-backed testosterone optimizer made with natural ingredients like Testosurge®, Hyperox™, and Venomerix Optima™ — designed to help you build muscle, burn fat, recover faster, and perform better.',
     },
     {
-      question: 'Can I pay for my subscription via purchase order?',
-      answer: 'Absolutely, we are happy to take your money in all forms.',
+      question: 'Is OptiSurge T1 safe?',
+      answer: 'Yes. OptiSurge is made in a GMP-certified facility and uses clinically studied ingredients shown to be safe in human trials. No synthetic hormones. No harsh stimulants.',
     },
     {
-      question: 'How do I apply for a job at TaxPal?',
+      question: 'Will I feel a difference?',
       answer:
-        'We only hire our customers, so subscribe for a minimum of 6 months and then let’s talk.',
+        'Most users report feeling stronger, more energized, and better recovered within 1–2 weeks. Testosterone support typically builds gradually, so results improve over time.',
     },
   ],
   [
     {
-      question: 'What was that testimonial about tax fraud all about?',
+      question: 'Can I stack this with other supplements?',
       answer:
-        'TaxPal is just a software application, ultimately your books are your responsibility.',
+        'Yes — there are absolutely no known contraindications. OptiSurge stacks well with creatine, protein, amino acids, and daily wellness vitamins. No ingredient conflicts or known medicinal interactions.',
     },
     {
       question:
-        'TaxPal sounds horrible but why do I still feel compelled to purchase?',
+        'Do I need to cycle off? ',
       answer:
-        'This is the power of excellent visual design. You just can’t resist it, no matter how poorly it actually functions.',
+        'No. OptiSurge is designed for long-term use with no need for cycling off. In fact, users often report that consistent use leads to more stable energy, recovery, and performance over time. While cycling off is not required, some users may notice a gradual decline in the benefits experienced during active use',
     },
     {
       question:
-        'I found other companies called TaxPal, are you sure you can use this name?',
+        'Is this only for men?',
       answer:
-        'Honestly not sure at all. We haven’t actually incorporated or anything, we just thought it sounded cool and made this website.',
+        'No. While OptiSurge is optimized for male hormone support, it’s formulated for both men and women — especially athletes, gym-goers, and anyone aiming to naturally support healthy testosterone levels and performance.',
     },
-  ],
-  [
-    {
-      question: 'How do you generate reports?',
-      answer:
-        'You just tell us what data you need a report for, and we get our kids to create beautiful charts for you using only the finest crayons.',
-    },
-    {
-      question: 'Can we expect more inventory features?',
-      answer: 'In life it’s really better to never expect anything at all.',
-    },
-    {
-      question: 'I lost my password, how do I get into my account?',
-      answer:
-        'Send us an email and we will send you a copy of our latest password spreadsheet so you can find your information.',
-    },
-  ],
+  ]
 ]
 
 export function Faqs() {
@@ -81,8 +65,7 @@ export function Faqs() {
             Frequently asked questions
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            If you can’t find what you’re looking for, email our support team
-            and if you’re lucky someone will get back to you.
+            If you can’t find what you’re looking for, email our team and we will get back to you.
           </p>
         </div>
         <ul

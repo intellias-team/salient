@@ -12,10 +12,10 @@ import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
 
 const features = [
   {
-    name: 'Testosurge 500 mg',
-    summary: 'Stay on top of things with always up-to-date reporting features.',
+    name: 'Testosurge 500 mg (Fenugreek Seed Extract)',
+    summary: 'Unlock your body\'s full testosterone potential.',
     description:
-      'We talked about reporting in the section above but we needed three items here, so mentioning it one more time for posterity.',
+      'Testosurge® is a natural, highly standardized ingredient proven in clinical studies to significantly increase total and biologically active free testosterone. Designed for products to boost testosterone, increase performance, and support healthy sexual function.',
     image: screenshotProfitLoss,
     icon: function ReportingIcon() {
       let id = useId()
@@ -46,11 +46,11 @@ const features = [
     },
   },
   {
-    name: 'Venomerix Optima 100 mg',
+    name: 'Venomerix Optima 100 mg (Grape Seed Extract)',
     summary:
-      'Never lose track of what’s in stock with accurate inventory tracking.',
+      'Support recovery, inflammation balance, and immune resilience.',
     description:
-      'We don’t offer this as part of our software but that statement is inarguably true. Accurate inventory tracking would help you for sure.',
+      'Venomerix® is a highly standardized adaptogenic and anti-inflammatory complex made from premium grape seed extract sourced from the Champagne region of France. Standardized to monomers and OPCs (Oligomeric Procyanidins) via HPLC, it helps the body manage stress, reduce inflammation, improve sleep, and recover faster from intense training.',
     image: screenshotInventory,
     icon: function InventoryIcon() {
       return (
@@ -74,11 +74,11 @@ const features = [
     },
   },
   {
-    name: 'Hyperox 50 mg',
+    name: 'Hyperox™ 50mg (Fenugreek seed extract) ',
     summary:
-      'Organize all of your contacts, service providers, and invoices in one place.',
+      'Boosts nitric oxide, blood flow, and experiences clean energy.',
     description:
-      'This also isn’t actually a feature, it’s just some friendly advice. We definitely recommend that you do this, you’ll feel really organized and professional.',
+      'Hyperox™ is a proprietary fenugreek seed extract standardized for select glycosides, designed to improve blood flow, nutrient delivery, and workout performance by enhancing nitric oxide production, cardiac output, oxygen uptake, and mitochondrial efficiency.',
     image: screenshotContacts,
     icon: function ContactsIcon() {
       return (
@@ -221,8 +221,7 @@ export function Ingredients() {
             Ingredients of Opti-Surge
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            Because you’d probably be a little confused if we suggested you
-            complicate your everyday business tasks instead.
+            What are we made of?
           </p>
         </div>
         <FeaturesMobile />

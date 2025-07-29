@@ -14,29 +14,29 @@ import screenshotVatReturns from '@/images/screenshots/vat-returns.png'
 
 const features = [
   {
-    title: 'Payroll',
+    title: 'Testosterone',
     description:
-      "Keep track of everyone's salaries and whether or not they've been paid. Direct deposit not supported.",
+      "Achieve 54% Higher Bioavailable Testosterone. Increase performance, muscle mass, healthy libido, and raise bioavailable, free, and total testosterone levels.  (Powered by Testosurge™) ",
     image: screenshotPayroll,
   },
   {
-    title: 'Claim expenses',
+    title: 'Fat Loss',
     description:
-      "All of your receipts organized into one place, as long as you don't mind typing in the data by hand.",
+      "Experience Rapid Reductions in Body-Fat% (Powered by Testosurge™)",
     image: screenshotExpenses,
   },
   {
-    title: 'VAT handling',
+    title: 'Recovery',
     description:
-      "We only sell our software to companies who don't deal with VAT at all, so technically we do all the VAT stuff they need.",
+      "Unlock Clean Energy & Faster Recovery: (Powered by Hyperox™, Venomerix™, and Testosterone Support)",
     image: screenshotVatReturns,
-  },
+  }/*,
   {
     title: 'Reporting',
     description:
       'Easily export your data into an Excel spreadsheet where you can do whatever the hell you want with it.',
     image: screenshotReporting,
-  },
+  },*/
 ]
 
 export function About() {  // Changed from PrimaryFeatures
@@ -74,11 +74,10 @@ export function About() {  // Changed from PrimaryFeatures
       <Container className="relative max-w-full">
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Why Use Testosterone Optizers?
+            Why use Opti-Surge?
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-            Well everything you need if you aren’t that picky about minor
-            details like tax compliance.
+			Boost Testosterone Naturally. Build more muscle. Burn more fat. Recover faster and perform longer — all without synthetic hormones or harsh stimulants.
           </p>
         </div>
         <TabGroup
