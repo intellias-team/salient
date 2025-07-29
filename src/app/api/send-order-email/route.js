@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import AWS from 'aws-sdk';   //TEST This
 
 export async function POST(req) {
   try {
