@@ -138,12 +138,12 @@ function FeaturesMobile() {
           <Feature feature={feature} className="mx-auto max-w-2xl" isActive />
           <div className="relative mt-10 pb-10">
             <div className="absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6" />
-            <div className="relative mx-auto w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
+            <div className="relative mx-auto w-full max-w-full overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
               <Image
-                className="w-full"
+                className="w-full h-auto object-contain"
                 src={feature.image}
                 alt=""
-                sizes="52.75rem"
+                sizes="100vw"
               />
             </div>
           </div>
@@ -189,12 +189,12 @@ function FeaturesDesktop() {
                   style={{ transform: `translateX(-${selectedIndex * 100}%)` }}
                   aria-hidden={featureIndex !== selectedIndex}
                 >
-                  <div className="w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
+                  <div className="w-full max-w-full overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10">
                     <Image
-                      className="w-full"
+                      className="w-full h-auto object-contain"
                       src={feature.image}
                       alt=""
-                      sizes="52.75rem"
+                      sizes="100vw"
                     />
                   </div>
                 </TabPanel>

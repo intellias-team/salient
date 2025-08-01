@@ -21,10 +21,16 @@ export async function POST(req) {
       description, // Include order details
     });
 
-    return new Response(JSON.stringify({ clientSecret: paymentIntent.client_secret }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({
+        clientSecret: paymentIntent.client_secret,
+        receiptNumber: paymentIntent.id, // Use paymentIntent.id as receiptNumber
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('PaymentIntent creation error:', error);
     return new Response(JSON.stringify({ error: error.message }), { status: 400 });

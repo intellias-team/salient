@@ -70,6 +70,8 @@ export async function POST(req) {
     const emailBody = `
 Order Confirmation
 
+Receipt Number: ${orderDetails.receiptNumber || 'N/A'}
+
 Items:
 ${orderDetails.items.map(item => `- ${item.name} x${item.quantity} @ $${item.price.toFixed(2)}`).join('\n')}
 
@@ -95,7 +97,7 @@ Thank you for your order!
       Source: process.env.SES_SENDER_EMAIL,
       Destination: { ToAddresses: [email] },
       Message: {
-        Subject: { Data: 'Order Confirmation' },
+        Subject: { Data: `Order Confirmation - Receipt #${orderDetails.receiptNumber || 'N/A'}` },
         Body: {
           Text: { Data: emailBody },
         },
