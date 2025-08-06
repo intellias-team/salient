@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
-import heroImage from '@/images/hero.jpg'
+import heroImage from '@/images/hero_new.jpg'
 import { useShoppingCart } from 'use-shopping-cart';
 
 const product = { id: 'prod_123', name: 'Item', price: 1000, currency: 'USD' };
