@@ -6,9 +6,9 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 
 import { Container } from '@/components/Container'
-import screenshotContacts from '@/images/screenshots/contacts.png'
-import screenshotInventory from '@/images/screenshots/inventory.png'
-import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
+import screenshotHyperox from '@/images/screenshots/hyperox.jpg'
+import screenshotVenomerix from '@/images/screenshots/venomerix.jpg'
+import screenshotTestosurge from '@/images/screenshots/testosurge.jpg'
 
 const features = [
   {
@@ -16,7 +16,7 @@ const features = [
     summary: 'Unlock your body\'s full testosterone potential.',
     description:
       'Testosurge® is a natural, highly standardized ingredient proven in clinical studies to significantly increase total and biologically active free testosterone. Designed for products to boost testosterone, increase performance, and support healthy sexual function.',
-    image: screenshotProfitLoss,
+    image: screenshotTestosurge,
     icon: function ReportingIcon() {
       let id = useId()
       return (
@@ -51,7 +51,7 @@ const features = [
       'Support recovery, inflammation balance, and immune resilience.',
     description:
       'Venomerix® is a highly standardized adaptogenic and anti-inflammatory complex made from premium grape seed extract sourced from the Champagne region of France. Standardized to monomers and OPCs (Oligomeric Procyanidins) via HPLC, it helps the body manage stress, reduce inflammation, improve sleep, and recover faster from intense training.',
-    image: screenshotInventory,
+    image: screenshotVenomerix,
     icon: function InventoryIcon() {
       return (
         <>
@@ -79,7 +79,7 @@ const features = [
       'Boosts nitric oxide, blood flow, and experiences clean energy.',
     description:
       'Hyperox™ is a proprietary fenugreek seed extract standardized for select glycosides, designed to improve blood flow, nutrient delivery, and workout performance by enhancing nitric oxide production, cardiac output, oxygen uptake, and mitochondrial efficiency.',
-    image: screenshotContacts,
+    image: screenshotHyperox,
     icon: function ContactsIcon() {
       return (
         <>

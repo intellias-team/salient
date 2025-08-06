@@ -35,6 +35,6 @@
 
   --font-sans: var(--font-inter);
   --font-display: var(--font-lexend);
-
+  --font-anton: 'Anton', sans-serif; /* Add Anton font family */
   --container-2xl: 40rem;
 }

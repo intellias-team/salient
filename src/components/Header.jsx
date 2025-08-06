@@ -70,7 +70,7 @@ function MobileNavigation() {
         transition
         className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-white p-4 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5 data-closed:scale-95 data-closed:opacity-0 data-enter:duration-150 data-enter:ease-out data-leave:duration-100 data-leave:ease-in"
       >
-        <MobileNavLink href="#primaryfeatures">About</MobileNavLink>
+        <MobileNavLink href="#features">About</MobileNavLink>
         <MobileNavLink href="#ingredients">Ingredients</MobileNavLink>
         <MobileNavLink href="#testimonials">Testimonials</MobileNavLink>
         <MobileNavLink href="#reviews">Reviews</MobileNavLink>

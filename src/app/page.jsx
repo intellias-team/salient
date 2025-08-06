@@ -14,9 +14,9 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <CallToAction />
         <About />
         <Ingredients />  
-        <CallToAction />
         <Testimonials />
         <Pricing />
         <Faqs />
