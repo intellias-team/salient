@@ -6,9 +6,9 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 
 import { Container } from '@/components/Container'
-import screenshotHyperox from '@/images/screenshots/hyperox.jpg'
-import screenshotVenomerix from '@/images/screenshots/venomerix.jpg'
-import screenshotTestosurge from '@/images/screenshots/testosurge.jpg'
+import screenshotHyperox from '@/images/screenshots/hyperox_ingredients.jpg'
+import screenshotVenomerix from '@/images/screenshots/venomerix_ingredients.jpg'
+import screenshotTestosurge from '@/images/screenshots/testosurge_ingredients.jpg'
 
 const features = [
   {
