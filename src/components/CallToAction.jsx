@@ -4,7 +4,7 @@
 import Image from 'next/image'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
-import testimonialsImage from '@/images/testimonials.jpg' // Replace with your image path
+import testimonialsImage from '@/images/testimonials_new.jpg' // Replace with your image path
 import backgroundImage from '@/images/background-features.jpg'
 
 

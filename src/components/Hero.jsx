@@ -25,7 +25,7 @@ export function Hero() {
         objectPosition="center"
         className="absolute inset-0 z-0"
       />
-      <div className="relative z-20 mt-77">
+      <div className="relative z-20 mt-115">
         <div className="flex justify-center gap-x-6">
           <Button
 			variant="solid"
