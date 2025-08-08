@@ -1,8 +1,12 @@
 
 'use client'
 
+import Image from 'next/image'
 import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
+import testimonialsImage from '@/images/testimonials.jpg' // Replace with your image path
+import backgroundImage from '@/images/background-features.jpg'
+
 
 export function CallToAction() {
   const videos = [
@@ -14,9 +18,24 @@ export function CallToAction() {
   return (
     <section
       id="testimonials"
-      className="relative overflow-hidden bg-blue-600 py-10"
+      className="relative overflow-hidden bg-black py-0"
     >
-       <Container className="relative">
+      <Image
+        className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
+        src={backgroundImage}
+        alt=""
+        width={2245}
+        height={1636}
+        unoptimized
+      />
+      <Container className="relative">
+        <Image
+          src={testimonialsImage}
+          alt="Testimonials banner"
+          className="w-full mb-6"  
+          priority
+        />
+
         <div className="max-w-full mb-10">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl">
             Testimonials

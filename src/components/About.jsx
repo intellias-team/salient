@@ -55,7 +55,7 @@ export function About() {
     <section
       id="features"
       aria-label="Features for running your books"
-      className="relative overflow-x-hidden overflow-y-hidden bg-blue-600 pt-20 pb-28 sm:py-10"
+      className="relative overflow-x-hidden overflow-y-hidden bg-black pt-20 pb-28 sm:py-10"
     >
       <Image
         className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"

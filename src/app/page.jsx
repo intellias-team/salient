@@ -18,7 +18,6 @@ export default function Home() {
         <About />
         <Ingredients />  
         <Testimonials />
-        <Pricing />
         <Faqs />
       </main>
       <Footer />

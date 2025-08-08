@@ -11,23 +11,23 @@ const testimonials = [
   [
     {
       content:
-        'TaxPal is so easy to use I can’t help but wonder if it’s really doing the things the government expects me to do.',
+        '“OptiSurge has been a real game changer for me. I’ve been off TRT for six months now — I expected to feel the drop-off, but it never came. I actually started feeling better, looking better, and performing better. I’ve landed on two capsules a day, and I’m honestly not looking back. This stuff just works.”',
       author: {
-        name: 'Sheryl Berge',
-        role: 'CEO at Lynch LLC',
+        name: 'Tony Freeman “The X-man”',
+        role: 'IFBB Pro Body Builder',
         image: avatarImage1,
       },
     },
     {
       content:
-        'I’m trying to get a hold of someone in support, I’m in a lot of trouble right now and they are saying it has something to do with my books. Please get back to me right away.',
+        '“I’ve given OptiSurge to current players, former college guys, and coaches around the league. It’s working — better energy, less inflammation, and noticeable fat loss. I’d definitely recommend it.”',
       author: {
-        name: 'Amy Hahn',
-        role: 'Director at Velocity Industries',
+        name: 'Antwan Randle El',
+        role: 'Assistant Head Coach and Wide Receivers Coach of the Chicago Bears',
         image: avatarImage4,
       },
     },
-  ],
+  ]/*,
   [
     {
       content:
@@ -67,7 +67,7 @@ const testimonials = [
         image: avatarImage4,
       },
     },
-  ],
+  ],*/
 ]
 
 function QuoteIcon(props) {
@@ -88,12 +88,11 @@ export function Testimonials() {
       <Container>
         <div className="mx-auto max-w-2xl md:text-center">
           <h2 className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
-            Loved by businesses worldwide.
+            Credited Reviews of Our Product: 
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            Our software is so simple that people can’t help but fall in love
-            with it. Simplicity is easy when you just skip tons of
-            mission-critical features.
+            Our Product has earned the trust of accredited professionals around the world - from NFL athletes and medical medical experts to nutritionists and everyday home gym enthusiasts. Hear what they Have to say! 
+
           </p>
         </div>
         <ul
